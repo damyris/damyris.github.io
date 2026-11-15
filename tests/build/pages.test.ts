@@ -34,8 +34,7 @@ describe('writeups', () => {
 });
 
 describe('links', () => {
-  // Résumé PDF arrives in Task 7.
-  const pending = new Set(['/damaris-ingram-resume.pdf']);
+  const pending = new Set<string>();
 
   test('internal links resolve', () => {
     for (const route of ['/', '/writeups/', '/projects/study-app/']) {
