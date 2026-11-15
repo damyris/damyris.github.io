@@ -1,4 +1,5 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
+import { overflowing } from './overflow';
 
 /** Vertical translation (px) of an element's own computed transform. */
 const ty = (loc: Locator) => loc.evaluate((el) => new DOMMatrixReadOnly(getComputedStyle(el).transform).m42);
@@ -62,6 +63,16 @@ test('tap toggles one folder at a time on touch', async ({ page }) => {
   expect(await ty(three)).toBeCloseTo(0, 0);
 });
 
+test('clicking a folder with a mouse does not leave it stuck up', async ({ page }) => {
+  onlyOn('desktop');
+  const first = folders(page).nth(0);
+  await first.locator('h3').click();
+  await page.mouse.move(5, 5);
+  await page.waitForTimeout(600);
+  await expect(first).not.toHaveClass(/is-lifted/);
+  expect(await ty(first)).toBeCloseTo(0, 0);
+});
+
 test('tapping the folder link navigates', async ({ page }) => {
   onlyOn('phone');
   await folders(page).nth(0).locator('a.view').tap();
@@ -97,6 +108,5 @@ test('writeups folder lists the newest three', async ({ page }) => {
 
 test('no horizontal scroll on home', async ({ page }) => {
   onlyOn('phone');
-  const [scroll, inner] = await page.evaluate(() => [document.documentElement.scrollWidth, window.innerWidth]);
-  expect(scroll).toBeLessThanOrEqual(inner);
+  expect(await overflowing(page)).toEqual([]);
 });

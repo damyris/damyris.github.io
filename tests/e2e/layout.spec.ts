@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { overflowing } from './overflow';
 
 const onlyOn = (name: 'desktop' | 'phone') =>
   test.skip(test.info().project.name !== name, `${name} only`);
@@ -7,8 +8,7 @@ test('no horizontal scroll on content pages', async ({ page }) => {
   onlyOn('phone');
   for (const route of ['/', '/writeups/', '/writeups/w-long/', '/projects/fixture-3/']) {
     await page.goto(route);
-    const [scroll, inner] = await page.evaluate(() => [document.documentElement.scrollWidth, window.innerWidth]);
-    expect(scroll, `${route} scrolls sideways`).toBeLessThanOrEqual(inner);
+    expect(await overflowing(page), `${route} has content past the page edge`).toEqual([]);
   }
 });
 

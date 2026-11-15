@@ -54,6 +54,8 @@ const { title, eyebrow, meta = [], description } = Astro.props;
     line-height: 1.7;
     max-width: 65ch;
     min-width: 0;
+    /* Hashes, paths and URLs in pentest notes are long unbroken strings. */
+    overflow-wrap: anywhere;
   }
   .prose :global(h2) {
     font-family: var(--f-mono);
@@ -76,6 +78,7 @@ const { title, eyebrow, meta = [], description } = Astro.props;
     background: var(--white);
     border: 1px solid var(--rule);
     padding: 1px 5px;
+    word-break: break-all;
   }
   /* Code blocks are dark terminal sheets taped onto the page. */
   .prose :global(pre) {

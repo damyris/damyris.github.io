@@ -122,6 +122,16 @@ describe('hero and about', () => {
     expect($('#about').text()).toContain('my setup');
   });
 
+  test('headline reads as one sentence', () => {
+    expect($('.headline').text().replace(/\s+/g, ' ').trim()).toBe(
+      'I learn how networks work so I can learn how they break.',
+    );
+  });
+
+  test('credly link is spaced', () => {
+    expect($('[data-other-badges]').text().replace(/\s+/g, ' ')).toContain('Certified User · verify on Credly');
+  });
+
   test('no placeholders', () => {
     for (const s of ['YOUR NAME', 'you@example.com', 'your photo']) {
       expect(text()).not.toContain(s);

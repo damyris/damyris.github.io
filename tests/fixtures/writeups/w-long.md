@@ -15,4 +15,4 @@ nmap -sC -sV -oA scans/initial 10.10.10.10 --script "default,safe,vuln" --min-ra
 
 ## Foothold
 
-Got in.
+Got in with the hash `aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0` and then browsed to http://10.10.123.45/admin/uploads/reverse-shell-payload-for-testing-only.php?cmd=whoami to confirm.

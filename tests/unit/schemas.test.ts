@@ -67,4 +67,22 @@ describe('writeupSchema', () => {
     expect(r.data?.date.getUTCFullYear()).toBe(2026);
     expect(writeupSchema.safeParse({ ...writeup, date: 'next tuesday' }).success).toBe(false);
   });
+
+  test('writeup rejects a blank date', () => {
+    const r = writeupSchema.safeParse({ ...writeup, date: null });
+    expect(r.success).toBe(false);
+    expect(firstPath(r)).toEqual(['date']);
+  });
+
+  test('writeup rejects a number as a date', () => {
+    expect(writeupSchema.safeParse({ ...writeup, date: 20261120 }).success).toBe(false);
+  });
+
+  test('writeup rejects an impossible date', () => {
+    expect(writeupSchema.safeParse({ ...writeup, date: '2026-02-30' }).success).toBe(false);
+  });
+
+  test('writeup accepts a YAML date object', () => {
+    expect(writeupSchema.safeParse({ ...writeup, date: new Date('2026-11-20') }).success).toBe(true);
+  });
 });
