@@ -1,0 +1,18 @@
+---
+import { getCollection, render } from 'astro:content';
+import Prose from '../../layouts/Prose.astro';
+import { statusLabel } from '../../lib/folders';
+
+export async function getStaticPaths() {
+  // Projects with an external `link` go straight there, so they get no page here.
+  const projects = (await getCollection('projects')).filter((p) => !p.data.link);
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<Prose title={project.data.title} eyebrow={`project · ${statusLabel(project.data.status)}`} description={project.data.summary}>
+  <Content />
+</Prose>

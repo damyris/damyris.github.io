@@ -1,0 +1,20 @@
+---
+import { getCollection, render } from 'astro:content';
+import Prose from '../../layouts/Prose.astro';
+
+export async function getStaticPaths() {
+  const writeups = await getCollection('writeups');
+  return writeups.map((writeup) => ({ params: { slug: writeup.id }, props: { writeup } }));
+}
+
+const { writeup } = Astro.props;
+const { Content } = await render(writeup);
+const d = writeup.data;
+const meta = [d.platform, d.date.toISOString().slice(0, 10), d.difficulty, d.tags?.join(', ')].filter(
+  (m): m is string => Boolean(m),
+);
+---
+
+<Prose title={d.title} eyebrow="lab writeup" meta={meta} description={d.summary}>
+  <Content />
+</Prose>

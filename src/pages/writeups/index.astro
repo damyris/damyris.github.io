@@ -1,0 +1,105 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { newestFirst } from '../../lib/folders';
+
+const writeups = newestFirst(await getCollection('writeups'));
+---
+
+<Base title="Lab Writeups" description="Writeups of the boxes I've rooted: recon, foothold and what I'd patch.">
+  <main class="writeups">
+    <a class="back label" href="/">← back home</a>
+    <h1>Lab Writeups</h1>
+    <p class="rule hand">
+      Writeups only cover machines I'm authorized to attack: TryHackMe, HackTheBox, or my own lab.
+    </p>
+
+    {
+      writeups.length === 0 ? (
+        <div class="empty">
+          <p class="stamp">COMING SOON</p>
+          <p>No writeups yet. The first box is on its way.</p>
+        </div>
+      ) : (
+        <ol class="list">
+          {writeups.map((w) => (
+            <li>
+              <a href={`/writeups/${w.id}/`}>{w.data.title}</a>
+              <p class="meta label">
+                {w.data.platform} · {w.data.date.toISOString().slice(0, 10)}
+              </p>
+              <p class="summary">{w.data.summary}</p>
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </main>
+</Base>
+
+<style>
+  .writeups {
+    padding: 34px var(--gutter) 60px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .back {
+    display: inline-block;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    margin-bottom: 26px;
+  }
+  h1 {
+    font-size: clamp(2rem, 6vw, 3rem);
+    letter-spacing: -0.03em;
+    margin: 0 0 8px;
+  }
+  .rule {
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    margin: 0 0 30px;
+  }
+  .empty {
+    background: var(--white);
+    box-shadow: 0 8px 22px var(--shadow);
+    padding: 40px 20px;
+    text-align: center;
+    transform: rotate(-0.6deg);
+  }
+  .stamp {
+    display: inline-block;
+    font-family: var(--f-pixel);
+    font-size: 1.8rem;
+    color: var(--pink);
+    border: 3px solid var(--pink);
+    padding: 4px 14px;
+    transform: rotate(-6deg);
+    margin: 0 0 16px;
+  }
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 18px;
+  }
+  .list li {
+    background: var(--white);
+    border-left: 4px solid var(--green);
+    padding: 14px 16px;
+    box-shadow: 0 4px 12px var(--shadow);
+    min-width: 0;
+  }
+  .list a {
+    font-weight: 700;
+    font-size: 1.15rem;
+    overflow-wrap: anywhere;
+  }
+  .meta {
+    margin: 4px 0;
+    color: var(--ink-soft);
+  }
+  .summary {
+    margin: 0;
+  }
+</style>
