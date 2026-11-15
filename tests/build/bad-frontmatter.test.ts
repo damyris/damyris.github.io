@@ -13,8 +13,9 @@ test('bad frontmatter fails the build', () => {
     });
     const output = `${r.stdout}\n${r.stderr}`;
     expect(r.status).not.toBe(0);
-    expect(output).toContain('bad-status');
-    expect(output).toContain('status');
+    // Astro stops at the first invalid collection, and which one it checks
+    // first varies, so accept either bad file — but it must name file and field.
+    expect(output).toMatch(/bad-status[\s\S]*status:|no-platform[\s\S]*platform/);
   } finally {
     rmSync(outDir, { recursive: true, force: true });
   }
