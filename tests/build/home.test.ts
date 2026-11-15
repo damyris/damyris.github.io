@@ -40,3 +40,91 @@ describe('nav and footer', () => {
     }
   });
 });
+
+describe('hero and about', () => {
+  const text = () => $('body').text().replace(/\s+/g, ' ');
+
+  test('name in the pixel box', () => {
+    expect($('h1').text().trim()).toBe('damaris ingram');
+    expect(text()).toContain("hello, i'm");
+    expect(text().toLowerCase()).not.toContain('my name is');
+  });
+
+  test('hero tags', () => {
+    for (const s of [
+      'breaks things',
+      'learns in public',
+      'Atlantic Tech College',
+      'Aspiring Pentester',
+      'open to labs, CTFs and good problems',
+      'I learn how networks work',
+      'so I can learn how they break.',
+    ]) {
+      expect(text()).toContain(s);
+    }
+  });
+
+  test('about headings', () => {
+    const about = $('#about').text();
+    expect(about).toContain('~/about');
+    expect(about).toContain('whoami');
+    expect(text().toLowerCase()).not.toContain('about me!');
+    expect(text().toLowerCase()).not.toContain("what's up");
+  });
+
+  test('bio', () => {
+    expect($('#about').text().replace(/\s+/g, ' ')).toContain(
+      "I'm a networking student at Atlantic Tech College who gets a little too curious about how things break.",
+    );
+    expect($('#about').text()).toContain('one lab at a time.');
+  });
+
+  test('certs', () => {
+    const certs = $('#about [data-cert]').map((_, el) => $(el).text().trim()).get();
+    expect(certs).toEqual(['CompTIA A+', 'CompTIA Tech+', 'CompTIA AI Fundamentals']);
+    const about = $('#about').text();
+    expect(about).not.toContain('Linux+');
+    expect(about).not.toContain('Cisco');
+  });
+
+  test('other badges', () => {
+    const badges = $('#about [data-other-badges]');
+    expect(badges.length).toBe(1);
+    for (const b of [
+      'IC3 Digital Literacy GS6 Master',
+      'PMI Project Management Ready',
+      'ESB: Entrepreneurship and Small Business',
+      'Intuit QuickBooks Online Certified User',
+    ]) {
+      expect(badges.text()).toContain(b);
+    }
+    expect(badges.find('a[href="https://www.credly.com/users/damaris-ingram"]').length).toBe(1);
+  });
+
+  test('skills', () => {
+    const about = $('#about').text();
+    for (const s of [
+      'Linux (Arch · Debian · Ubuntu · Fedora)',
+      'Networking fundamentals',
+      'Hardware & troubleshooting',
+      'HTML/CSS/JavaScript',
+      'Git & GitHub Pages',
+    ]) {
+      expect(about).toContain(s);
+    }
+  });
+
+  test('polaroids', () => {
+    const imgs = $('#about img');
+    expect(imgs.length).toBeGreaterThan(0);
+    imgs.each((_, img) => expect($(img).attr('alt')?.trim()).toBeTruthy());
+    expect($('#about').text()).toContain('my study app');
+    expect($('#about').text()).toContain('my setup');
+  });
+
+  test('no placeholders', () => {
+    for (const s of ['YOUR NAME', 'you@example.com', 'your photo']) {
+      expect(text()).not.toContain(s);
+    }
+  });
+});

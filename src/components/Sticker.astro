@@ -1,0 +1,44 @@
+---
+interface Props {
+  text: string;
+  color: 'yellow' | 'green' | 'pink' | 'blue';
+  variant?: 'square' | 'dashed';
+  'aria-hidden'?: 'true';
+  [key: `data-${string}`]: string | boolean | undefined;
+}
+const { text, color, variant, ...rest } = Astro.props;
+---
+
+<span class:list={['stk', color, variant]} {...rest}>{text}</span>
+
+<style>
+  .stk {
+    --zz: 6px;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 7px 20px;
+    clip-path: polygon(
+      0 0, 100% 0,
+      calc(100% - var(--zz)) 16%, 100% 33%, calc(100% - var(--zz)) 50%, 100% 66%, calc(100% - var(--zz)) 83%,
+      100% 100%, 0 100%,
+      var(--zz) 83%, 0 66%, var(--zz) 50%, 0 33%, var(--zz) 16%
+    );
+  }
+  .yellow { background: var(--yellow); color: var(--ink); }
+  .green { background: var(--green); color: var(--white); }
+  .pink { background: var(--pink); color: var(--white); }
+  .blue { background: var(--blue); color: var(--white); }
+  .square {
+    padding: 7px 12px;
+    font-family: var(--f-mono);
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .dashed {
+    background: var(--white);
+    color: var(--ink-soft);
+    outline: 1.5px dashed var(--ink-soft);
+    outline-offset: -5px;
+  }
+</style>

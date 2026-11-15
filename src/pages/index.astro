@@ -1,12 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
 import { site } from '../config/site';
 ---
 
 <Base title={site.fullName}>
   <main>
-    <section id="top"><h1>{site.name}</h1></section>
-    <section id="about"></section>
+    <Hero />
+    <About />
     <section id="projects"></section>
   </main>
 </Base>

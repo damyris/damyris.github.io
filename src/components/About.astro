@@ -1,0 +1,140 @@
+---
+import { site } from '../config/site';
+import Polaroid from './Polaroid.astro';
+import Sticker from './Sticker.astro';
+
+const certColors = ['pink', 'blue', 'yellow'] as const;
+const skillColors = ['yellow', 'green', 'pink', 'blue', 'yellow'] as const;
+const glyphs = ['>_', '#', '</>'];
+---
+
+<section class="about" id="about" aria-labelledby="about-title">
+  <p class="label-hand hand">~/about</p>
+  <h2 class="boxed" id="about-title">whoami</h2>
+
+  <div class="grid">
+    {
+      site.photo && (
+        <div class="pol l">
+          <Polaroid
+            caption={site.photo.caption}
+            tilt="left"
+            image={{ src: site.photo.src, alt: site.photo.alt }}
+          />
+        </div>
+      )
+    }
+    <p class="bio hand">{site.bio}</p>
+    <div class="pol r">
+      <Polaroid caption={site.setup.caption} tilt="right" lines={site.setup.lines} />
+    </div>
+  </div>
+
+  <h3 class="sub label">certified</h3>
+  <div class="stickers">
+    {
+      site.certs.map((c, i) => (
+        <Sticker
+          data-cert
+          text={c.state === 'in-progress' ? `${c.name} · soon` : c.name}
+          color={certColors[i % certColors.length]}
+          variant={c.state === 'in-progress' ? 'dashed' : undefined}
+        />
+      ))
+    }
+  </div>
+  <p class="other" data-other-badges>
+    <span class="label">other badges:</span>
+    {site.otherBadges.items.join(' · ')} ·
+    <a href={site.otherBadges.url} target="_blank" rel="noopener">verify on Credly ↗</a>
+  </p>
+
+  <h3 class="sub label">skills</h3>
+  <div class="stickers">
+    {
+      site.skills.map((s, i) => (
+        <>
+          <Sticker text={s} color={skillColors[i % skillColors.length]} />
+          {i < glyphs.length && (
+            <Sticker text={glyphs[i]} color={skillColors[(i + 1) % skillColors.length]} variant="square" aria-hidden="true" />
+          )}
+        </>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .about {
+    padding: 0 var(--gutter) 50px;
+  }
+  .label-hand {
+    font-size: 1.1rem;
+    margin: 0 0 0 clamp(0px, 4vw, 40px);
+  }
+  .boxed {
+    display: table;
+    margin: 10px auto 28px;
+    border: 1.5px solid var(--ink);
+    background: var(--white);
+    padding: 3px 12px;
+    font-size: 1.15rem;
+    font-weight: 500;
+    font-family: var(--f-mono);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr) 180px;
+    gap: 28px;
+    align-items: center;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .pol {
+    display: flex;
+    justify-content: center;
+  }
+  .pol.r {
+    align-self: start;
+  }
+  .bio {
+    font-size: clamp(1.15rem, 2.4vw, 1.4rem);
+    line-height: 1.6;
+    text-align: center;
+    margin: 0 auto;
+    max-width: 36ch;
+  }
+  @media (max-width: 700px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+    .bio {
+      grid-column: 1 / -1;
+      grid-row: 1;
+    }
+  }
+  .sub {
+    text-align: center;
+    margin: 34px 0 12px;
+    color: var(--ink-soft);
+  }
+  .stickers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .other {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    max-width: 640px;
+    margin: 14px auto 0;
+  }
+  .other .label {
+    margin-right: 4px;
+  }
+</style>
