@@ -1,1 +1,12 @@
-<h1>damaris ingram</h1>
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config/site';
+---
+
+<Base title={site.fullName}>
+  <main>
+    <section id="top"><h1>{site.name}</h1></section>
+    <section id="about"></section>
+    <section id="projects"></section>
+  </main>
+</Base>

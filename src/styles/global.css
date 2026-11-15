@@ -1,0 +1,106 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background-color: var(--mat);
+  background-image:
+    linear-gradient(var(--mat-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--mat-line) 1px, transparent 1px);
+  background-size: 44px 44px;
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px;
+}
+
+.page {
+  max-width: 980px;
+  margin: 0 auto;
+  background-color: var(--paper);
+  background-image: repeating-linear-gradient(to bottom, transparent 0 31px, var(--rule) 31px 32px);
+  box-shadow: 0 10px 40px var(--shadow);
+  overflow: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+.hand {
+  font-family: var(--f-hand);
+}
+
+.label {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Tape strips used on polaroids and sheets. */
+.tape {
+  position: absolute;
+  width: 56px;
+  height: 18px;
+  background: var(--tape);
+  top: -8px;
+  pointer-events: none;
+}
+.tape.l {
+  left: -14px;
+  transform: rotate(-32deg);
+}
+.tape.r {
+  right: -14px;
+  transform: rotate(32deg);
+}
+.tape.blue {
+  background: var(--tape-blue);
+}

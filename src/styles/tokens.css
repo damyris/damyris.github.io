@@ -1,0 +1,40 @@
+/* Design tokens, carried over from docs/mockups/portfolio-notebook.html.
+   The site is deliberately light-only: ruled notebook paper on a grey cutting mat. */
+:root {
+  color-scheme: light;
+
+  --mat: #8b8b8b;
+  --mat-line: #a2a2a2;
+  --paper: #f7f6f2;
+  --rule: #e5e3dc;
+  --ink: #1b1a19;
+  --ink-soft: #5a5750;
+  --white: #ffffff;
+
+  --yellow: #f3c234;
+  --green: #17834c;
+  --mint: #c4e8d5;
+  --sand: #f0e4c0;
+  --pink: #d92a6c;
+  --blue: #2b4fd8;
+  --orange: #ee6a3b;
+
+  --term-bg: #161616;
+  --term-fg: #e9e1cf;
+  --term-green: #9fd27f;
+  --crt-bg: #1c1812;
+  --crt-line: #3a3024;
+  --amber: #e8a33a;
+  --teal: #2bb3a3;
+
+  --tape: rgba(240, 228, 192, 0.85);
+  --tape-blue: rgba(160, 180, 240, 0.7);
+  --shadow: rgba(0, 0, 0, 0.18);
+
+  --f-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-pixel: 'Pixelify Sans', 'Space Mono', ui-monospace, monospace;
+  --f-hand: 'Gochi Hand', 'Comic Sans MS', 'Chalkboard SE', cursive;
+  --f-mono: 'Space Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  --gutter: 20px;
+}

@@ -1,0 +1,94 @@
+---
+import { site } from '../config/site';
+const year = new Date().getFullYear();
+---
+
+<footer id="contact">
+  <p class="ping">
+    <span class="hand">ping me →</span>
+    <code class="email" data-email>{site.email}</code>
+    <button type="button" class="copy" data-copy aria-label="Copy email address">copy</button>
+    <span class="copied" role="status" aria-live="polite" data-copied></span>
+  </p>
+  <p class="links">
+    <a href={site.resume} download>↓ download my résumé (PDF)</a>
+  </p>
+  <p class="small">© {year} {site.fullName} · learning in public · built with Astro</p>
+</footer>
+
+<script>
+  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-copy]')) {
+    button.addEventListener('click', async () => {
+      const footer = button.closest('footer');
+      const email = footer?.querySelector<HTMLElement>('[data-email]');
+      const status = footer?.querySelector<HTMLElement>('[data-copied]');
+      if (!email || !status) return;
+      try {
+        await navigator.clipboard.writeText(email.textContent ?? '');
+        status.textContent = 'copied!';
+      } catch {
+        // Clipboard blocked: select the address so it can be copied by hand.
+        const range = document.createRange();
+        range.selectNodeContents(email);
+        const selection = window.getSelection();
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+        status.textContent = 'selected, press ⌘C / Ctrl+C';
+      }
+    });
+  }
+</script>
+
+<style>
+  footer {
+    padding: 34px var(--gutter) 40px;
+    text-align: center;
+    border-top: 1px dashed var(--ink-soft);
+    display: grid;
+    gap: 10px;
+  }
+  p {
+    margin: 0;
+  }
+  .ping {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px 10px;
+    font-size: 1.2rem;
+  }
+  .email {
+    font-family: var(--f-mono);
+    font-size: 0.85rem;
+    background: var(--white);
+    border: 1px solid var(--rule);
+    padding: 3px 8px;
+    user-select: all;
+    overflow-wrap: anywhere;
+  }
+  .copy {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 1.5px solid var(--ink);
+    background: var(--yellow);
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+  .copied {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--green);
+  }
+  .links a {
+    font-family: var(--f-mono);
+    font-size: 12px;
+  }
+  .small {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+</style>
