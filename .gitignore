@@ -7,3 +7,7 @@ playwright-report/
 .superpowers/
 .DS_Store
 dist-fixtures/
+
+# Planning docs and mockups stay on this Mac only
+docs/superpowers/
+docs/mockups/
