@@ -1,0 +1,94 @@
+---
+interface Props {
+  label: string;
+  question: string;
+  answers: [string, string, string, string];
+  correct: 0 | 1 | 2 | 3;
+}
+const { label, question, answers, correct } = Astro.props;
+const letters = ['A', 'B', 'C', 'D'];
+---
+
+<div class="sheet quiz">
+  <span class="tape l"></span><span class="tape r"></span>
+  <p class="chip">{label}</p>
+  <p class="q"><span aria-hidden="true">&gt;</span> {question}</p>
+  <ol>
+    {
+      answers.map((a, i) => (
+        <li class:list={[{ right: i === correct }]}>
+          <b>{letters[i]}</b>
+          <span>{a}</span>
+          {i === correct && <em>[ok]</em>}
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  .quiz {
+    background: var(--crt-bg);
+    color: var(--term-fg);
+    font-family: var(--f-mono);
+    border: 1px solid var(--amber);
+  }
+  .chip {
+    display: inline-block;
+    margin: 0 0 10px;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    border: 1px solid var(--crt-line);
+    padding: 2px 8px;
+    color: var(--ink-soft);
+    color: var(--term-fg);
+    opacity: 0.75;
+  }
+  .q {
+    font-weight: 700;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    margin: 0 0 12px;
+  }
+  .q span {
+    color: var(--amber);
+  }
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+  li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--crt-line);
+    padding: 5px 8px;
+    font-size: 0.74rem;
+  }
+  li b {
+    display: grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    flex: none;
+    border: 1px solid currentColor;
+    font-size: 0.65rem;
+  }
+  li.right {
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+  li.right b {
+    background: var(--teal);
+    color: var(--crt-bg);
+  }
+  li em {
+    margin-left: auto;
+    font-style: normal;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+  }
+</style>

@@ -1,0 +1,33 @@
+<div class="sheet stamp-sheet">
+  <span class="tape l"></span><span class="tape r blue"></span>
+  <div class="lines" aria-hidden="true">box 01 · ???<br />box 02 · ???<br />box 03 · ???</div>
+  <p class="stamp">COMING SOON</p>
+</div>
+
+<style>
+  .stamp-sheet {
+    display: grid;
+    place-items: center;
+    min-height: 150px;
+  }
+  .lines {
+    position: absolute;
+    inset: 16px;
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    opacity: 0.5;
+    line-height: 1.8;
+  }
+  .stamp {
+    position: relative;
+    margin: 0;
+    font-family: var(--f-pixel);
+    font-size: 1.7rem;
+    color: var(--pink);
+    border: 3px solid var(--pink);
+    padding: 4px 14px;
+    transform: rotate(-8deg);
+    letter-spacing: 0.05em;
+  }
+</style>

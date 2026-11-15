@@ -1,0 +1,29 @@
+---
+interface Props {
+  lines: string[];
+}
+const { lines } = Astro.props;
+---
+
+<div class="sheet term">
+  <span class="tape l"></span>
+  <pre>{lines.map((line) => (line.startsWith('$') ? <><span class="p">$</span>{line.slice(1)}{'\n'}</> : <>{line}{'\n'}</>))}</pre>
+</div>
+
+<style>
+  .term {
+    background: var(--term-bg);
+    color: var(--term-fg);
+  }
+  pre {
+    margin: 0;
+    font-family: var(--f-mono);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .p {
+    color: var(--term-green);
+  }
+</style>

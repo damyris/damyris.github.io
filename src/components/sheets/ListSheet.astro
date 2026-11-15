@@ -1,0 +1,47 @@
+---
+interface Props {
+  items: { title: string; href: string }[];
+  count: number;
+}
+const { items, count } = Astro.props;
+---
+
+<div class="sheet list-sheet">
+  <span class="tape l"></span>
+  <p class="label">latest</p>
+  <ul>
+    {
+      items.map((item) => (
+        <li>
+          <a href={item.href}>{item.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="count label">{count} {count === 1 ? 'writeup' : 'writeups'}</p>
+</div>
+
+<style>
+  .list-sheet {
+    background-color: var(--white);
+    background-image: repeating-linear-gradient(to bottom, transparent 0 25px, var(--rule) 25px 26px);
+  }
+  .label {
+    margin: 0 0 6px;
+    color: var(--ink-soft);
+  }
+  ul {
+    margin: 0;
+    padding-left: 18px;
+    font-family: var(--f-hand);
+    font-size: 1.05rem;
+    line-height: 26px;
+  }
+  a {
+    overflow-wrap: anywhere;
+  }
+  .count {
+    margin: 10px 0 0;
+    text-align: right;
+  }
+</style>

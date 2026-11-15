@@ -128,3 +128,37 @@ describe('hero and about', () => {
     }
   });
 });
+
+describe('folder stack', () => {
+  const folders = () => $('#projects .folder');
+
+  test('three folders with tabs', () => {
+    expect(folders().length).toBe(3);
+    const tabs = folders().map((_, f) => $(f).find('.tab').text()).get();
+    ['01', '02', '03'].forEach((n, i) => expect(tabs[i]).toContain(n));
+  });
+
+  test('study app folder', () => {
+    const first = folders().eq(0);
+    expect(first.text()).toContain('Study App');
+    expect(first.text()).toContain('shipped');
+    expect(first.text()).toContain("Windows became unstable after last night's update.");
+    expect(first.find('a[href="/projects/study-app/"]').length).toBe(1);
+  });
+
+  test('portfolio folder links out', () => {
+    expect(folders().eq(1).find('a.view').attr('href')).toBe('https://github.com/damyris/damyris.github.io');
+  });
+
+  test('writeups folder is last and coming soon', () => {
+    const last = folders().last();
+    expect(last.text()).toContain('Lab Writeups');
+    expect(last.text()).toContain('coming soon');
+    expect(last.text()).toContain('COMING SOON');
+    expect(last.find('a[href="/writeups/"]').length).toBe(1);
+  });
+
+  test('folders are focusable', () => {
+    folders().each((_, f) => expect($(f).attr('tabindex')).toBe('0'));
+  });
+});

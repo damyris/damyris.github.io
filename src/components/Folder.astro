@@ -1,0 +1,210 @@
+---
+import type { FolderModel } from '../lib/folders';
+import QuizSheet from './sheets/QuizSheet.astro';
+import TerminalSheet from './sheets/TerminalSheet.astro';
+import AsciiSheet from './sheets/AsciiSheet.astro';
+import StampSheet from './sheets/StampSheet.astro';
+import ListSheet from './sheets/ListSheet.astro';
+
+interface Props {
+  folder: FolderModel;
+  index: number;
+}
+const { folder, index } = Astro.props;
+const { sheet } = folder;
+const darkText = folder.color === 'yellow';
+const titleId = `folder-${folder.number}`;
+---
+
+<article
+  class="folder"
+  tabindex="0"
+  aria-labelledby={titleId}
+  style={`--i: ${index}; --fc: var(--${folder.color === 'ink' ? 'ink' : folder.color}); --ft: var(--${darkText ? 'ink' : 'white'});`}
+>
+  <div class="tab" aria-hidden="true">
+    <span class="full">✦ Project {folder.number}</span><span class="compact">{folder.number}</span>
+  </div>
+  <div class="fbody">
+    <div class="ftext">
+      <p class="fstatus label"><i aria-hidden="true"></i> {folder.statusText}</p>
+      <h3 id={titleId}>{folder.title}</h3>
+      <p class="summary">{folder.summary}</p>
+      <a
+        class="view label"
+        href={folder.href}
+        target={folder.external ? '_blank' : undefined}
+        rel={folder.external ? 'noopener' : undefined}>{folder.linkLabel}</a
+      >
+    </div>
+    <div class="sheet-slot">
+      {sheet.type === 'quiz' && <QuizSheet {...sheet} />}
+      {sheet.type === 'terminal' && <TerminalSheet lines={sheet.lines} />}
+      {sheet.type === 'ascii' && <AsciiSheet art={sheet.art} caption={sheet.caption} />}
+      {sheet.type === 'stamp' && <StampSheet />}
+      {sheet.type === 'list' && <ListSheet items={sheet.items} count={sheet.count} />}
+    </div>
+  </div>
+</article>
+
+<style>
+  .folder {
+    --lift: cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.45s var(--lift);
+  }
+  .folder + .folder {
+    margin-top: -64px;
+  }
+  .folder:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 4px;
+  }
+
+  .tab {
+    position: absolute;
+    top: -33px;
+    left: calc((100% - var(--tab-w)) * var(--i) / max(calc(var(--n) - 1), 1));
+    width: var(--tab-w);
+    height: 34px;
+    background: var(--fc);
+    color: var(--ft);
+    font-family: var(--f-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 100%, 0 100%);
+  }
+  .compact {
+    display: none;
+  }
+
+  .fbody {
+    background: var(--fc);
+    color: var(--ft);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: 24px;
+    padding: 30px 30px 100px;
+    min-height: 300px;
+    box-shadow: 0 -6px 16px var(--shadow);
+    transition: box-shadow 0.45s;
+  }
+  .folder:last-child .fbody {
+    padding-bottom: 34px;
+  }
+  .ftext {
+    min-width: 0;
+  }
+  .fstatus {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0;
+  }
+  .fstatus i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  h3 {
+    font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 22px 0 8px;
+    overflow-wrap: anywhere;
+  }
+  .summary {
+    margin: 0 0 18px;
+    font-size: 0.92rem;
+    opacity: 0.88;
+    max-width: 38ch;
+  }
+  .view {
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+  }
+
+  .sheet-slot {
+    min-width: 0;
+    align-self: start;
+  }
+  .sheet-slot :global(.sheet) {
+    position: relative;
+    background-color: var(--white);
+    color: var(--ink);
+    padding: 16px;
+    box-shadow: 0 8px 22px var(--shadow);
+    transform: rotate(1.5deg);
+    transition: transform 0.45s var(--lift);
+  }
+  .sheet-slot :global(.sheet.quiz) {
+    background-color: var(--crt-bg);
+    color: var(--term-fg);
+  }
+  .sheet-slot :global(.sheet.term) {
+    background-color: var(--term-bg);
+    color: var(--term-fg);
+  }
+
+  /* The lift: mouse hover (only on devices that really hover), keyboard focus, or a tap. */
+  .folder.is-lifted,
+  .folder:focus-visible {
+    transform: translateY(-34px) rotate(-0.5deg);
+  }
+  .folder.is-lifted .fbody,
+  .folder:focus-visible .fbody {
+    box-shadow: 0 -14px 30px var(--shadow);
+  }
+  .folder.is-lifted :global(.sheet),
+  .folder:focus-visible :global(.sheet) {
+    transform: translateY(-22px) rotate(-1.5deg);
+  }
+  @media (hover: hover) {
+    .folder:hover {
+      transform: translateY(-34px) rotate(-0.5deg);
+    }
+    .folder:hover .fbody {
+      box-shadow: 0 -14px 30px var(--shadow);
+    }
+    .folder:hover :global(.sheet) {
+      transform: translateY(-22px) rotate(-1.5deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .folder,
+    .fbody,
+    .sheet-slot :global(.sheet) {
+      transition: none;
+    }
+  }
+
+  /* Crowded stacks: swap "✦ PROJECT 01" for a compact "01". */
+  :global(.drawer[data-compact-wide]) .full {
+    display: none;
+  }
+  :global(.drawer[data-compact-wide]) .compact {
+    display: inline;
+  }
+  @media (max-width: 700px) {
+    .fbody {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 26px 20px 100px;
+    }
+    :global(.drawer[data-compact-narrow]) .full {
+      display: none;
+    }
+    :global(.drawer[data-compact-narrow]) .compact {
+      display: inline;
+    }
+  }
+</style>

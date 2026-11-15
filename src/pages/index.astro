@@ -1,14 +1,33 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import About from '../components/About.astro';
+import FolderStack from '../components/FolderStack.astro';
+import { buildFolders } from '../lib/folders';
 import { site } from '../config/site';
+
+const folders = buildFolders(await getCollection('projects'), await getCollection('writeups'));
 ---
 
 <Base title={site.fullName}>
   <main>
     <Hero />
     <About />
-    <section id="projects"></section>
+    <section class="projects" id="projects" aria-labelledby="projects-title">
+      <h2 class="hand label-hand" id="projects-title">stuff i'm working on ↓</h2>
+      <FolderStack folders={folders} />
+    </section>
   </main>
 </Base>
+
+<style>
+  .projects {
+    padding: 10px var(--gutter) 60px;
+  }
+  .label-hand {
+    font-weight: 400;
+    font-size: 1.1rem;
+    margin: 0 0 46px clamp(0px, 4vw, 40px);
+  }
+</style>

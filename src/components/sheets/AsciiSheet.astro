@@ -1,0 +1,28 @@
+---
+interface Props {
+  art: string;
+  caption: string;
+}
+const { art, caption } = Astro.props;
+---
+
+<div class="sheet ascii">
+  <span class="tape r"></span>
+  <pre>{art}</pre>
+  <p class="hand">{caption}</p>
+</div>
+
+<style>
+  pre {
+    margin: 0;
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    overflow-x: auto;
+  }
+  p {
+    margin: 8px 0 0;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+</style>

@@ -1,0 +1,42 @@
+---
+import type { FolderModel } from '../lib/folders';
+import { tabLayout } from '../lib/folders';
+import Folder from './Folder.astro';
+
+interface Props {
+  folders: FolderModel[];
+}
+const { folders } = Astro.props;
+const layout = tabLayout(folders.length);
+---
+
+<div
+  class="drawer"
+  style={`--n: ${folders.length};`}
+  data-compact-wide={layout.compactWide ? '' : undefined}
+  data-compact-narrow={layout.compactNarrow ? '' : undefined}
+>
+  {folders.map((folder, i) => <Folder folder={folder} index={i} />)}
+</div>
+
+<script>
+  import { initFolderLift } from '../scripts/folder-lift';
+  initFolderLift();
+</script>
+
+<style>
+  .drawer {
+    --tab-w: 168px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding-top: 34px;
+  }
+  .drawer[data-compact-wide] {
+    --tab-w: 56px;
+  }
+  @media (max-width: 700px) {
+    .drawer[data-compact-narrow] {
+      --tab-w: 48px;
+    }
+  }
+</style>
